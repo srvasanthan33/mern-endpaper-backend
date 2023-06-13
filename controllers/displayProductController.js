@@ -48,7 +48,7 @@ const addCart = async(request,response) => {
             const cartProduct = new cartModel({
                 name:productToBeAdded.name,
                 price:productToBeAdded.price,
-                quantity:productToBeAdded.quantity,
+                quantity:1,
                 total:totalPrice
             })
 
