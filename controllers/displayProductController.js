@@ -1,6 +1,7 @@
 
 const productModel = require("../models/productsModel")
 const cartModel = require("../models/cartModel")
+const productsModel = require("../models/productsModel")
 
 const getAllProducts = async(request,response) =>{
     try{
@@ -35,16 +36,19 @@ const addProduct = async(request,response) => {
 
 const addCart = async(request,response) => {
     let fetched_id = request.body.id
+    
     try {
-        const productToBeAdded = await productModel.findOne({_id:fetched_id})
-        console.log(productToBeAdded)
+        // const productToBeAdded = await productModel.findOne({_id:fetched_id})
+        const productToBeAdded = await productModel.findById(fetched_id)
+
+        
 
         try {
-            const totalPrice = request.body.price * request.body.quantity
-            const cartProduct = new CartModel({
-                name:cartProduct.name,
-                price:cartProduct.price,
-                quantity:cartProduct.quantity,
+            const totalPrice = productToBeAdded.price * productToBeAdded.quantity
+            const cartProduct = new cartModel({
+                name:productToBeAdded.name,
+                price:productToBeAdded.price,
+                quantity:productToBeAdded.quantity,
                 total:totalPrice
             })
 
@@ -58,7 +62,7 @@ const addCart = async(request,response) => {
     }
     catch(error)
     {
-        response.status(500).json({message:error.message})
+        response.status(500).json({message:error.message}).redirect("http://www.google.com")
     }
 }
 
